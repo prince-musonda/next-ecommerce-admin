@@ -43,7 +43,10 @@ export default function Products() {
               <tr>
                 <td>{product.title}</td>
                 <td>
+                  {/* edit product button */}
                   <Link href={`/products/edit/${product._id}`}> Edit</Link>
+                  {/* delete product button */}
+                  <Link href={`/products/delete/${product._id}`}>Delete</Link>
                 </td>
               </tr>
             ))}

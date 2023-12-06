@@ -12,6 +12,7 @@ export default async function handler(req, res) {
     }
     // else return all available products in db
     const products = await Product.find();
+    console.log(products);
     res.status(200).json(products);
   }
 
@@ -21,11 +22,31 @@ export default async function handler(req, res) {
     // create new product
     const { title, description, price } = req.body;
     const productDocument = await Product.create({ title, description, price });
-    res.status(200).json(productDocument);
+    return res.status(200).json(productDocument);
   }
 
   if (req.method == "PUT") {
     // update product info
-    Product.updateOne({ _id });
+    const { title, description, price } = req.body;
+    const productDocument = await Product.updateOne(
+      { _id: productData._id },
+      { title, description, price }
+    );
+    res.status(200).json(productDocument);
+  }
+
+  if (req.method == "DELETE") {
+    // delete a product from database.
+    // Get product Id
+    const productID = req.query.id;
+    if (productID) {
+      //remove from database
+      await Product.deleteOne({ _id: productID });
+      return res.status(200).json({ status: "success" });
+    } else {
+      res
+        .status(200)
+        .json({ status: "failed", message: "request missing product ID" });
+    }
   }
 }
